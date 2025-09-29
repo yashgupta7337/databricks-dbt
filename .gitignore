@@ -5,6 +5,18 @@ build/
 dist/
 wheels/
 *.egg-info
+.vscode
 
 # Virtual environments
 .venv
+
+# Credentials
+.env  
+
+# dbt Connections
+/dbt_tutorial/profiles.yml
+
+# dbt packages
+/dbt_internal_packages
+/dbt_packages
+/logs
