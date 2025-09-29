@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: bronze_date
+    description: property level config for bronze_date
+    config: 
+      tags: ['bronze', 'bronze_date']
+      materialized: view
+
+  - name: bronze_product
+    description: property level config for bronze_date
+    config: 
+      tags: ['bronze', 'bronze_product']
+      materialized: view
+    
+
+    
