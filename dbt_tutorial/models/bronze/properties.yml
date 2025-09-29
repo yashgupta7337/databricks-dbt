@@ -6,6 +6,7 @@ models:
     config: 
       tags: ['bronze', 'bronze_date']
       materialized: view
+      schema: bronze
 
   - name: bronze_product
     description: property level config for bronze_date
