@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: bronze_sales
+    description: "Bronze layer sales data from source"
+    columns:
+      - name: id
+        description: "Primary key"
+      - name: customer_id
+        description: "Customer identifier"
+      - name: product_id
+        description: "Product identifier"
+      - name: store_id
+        description: "Store identifier"
+      - name: date_id
+        description: "Date identifier"
+      - name: quantity
+        description: "Quantity sold"
+      - name: unit_price
+        description: "Unit price"
+      - name: total_amount
+        description: "Total amount"
