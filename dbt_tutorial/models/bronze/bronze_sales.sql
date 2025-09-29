@@ -1,3 +1,6 @@
+{# Block Level Config #}
+{{ config(materialized='view')}}
+
 SELECT 
     *
 FROM
