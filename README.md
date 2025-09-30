@@ -83,7 +83,7 @@ Run snapshots by environment:
 ![Gold lineage – gold_items](data_lineage/dl-gold_gold_items.png)
 
 ### CI/CD (recommended) 🤖
-Example GitHub Actions steps:
+Example steps:
 ```yaml
 steps:
   - run: dbt deps
