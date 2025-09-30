@@ -87,6 +87,8 @@ models:
         description: "Unit price"
       - name: gross_amount
         description: "Gross amount before discount"
+        tests:
+          - generic_non_negative
       - name: discount_amount
         description: "Discount amount"
       - name: net_amount
