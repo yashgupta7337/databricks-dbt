@@ -2,7 +2,7 @@
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
 name: "dbt_tutorial"
-version: "1.0.6"
+version: "1.0.7"
 
 # This setting configures which "profile" dbt uses for this project.
 profile: "dbt_tutorial"
