@@ -1,85 +1,70 @@
-dbt_tutorial on Databricks
-================================
+## dbt_tutorial on Databricks ✨
 
-This repository contains a dbt Core project configured to run on Databricks. It demonstrates a layered model architecture (bronze → silver) with custom tests and macros.
+This repository contains a dbt Core project running on Databricks, implementing the Medallion architecture and environment-aware deployments.
 
-Project highlights
-------------------
-- Bronze models sourced from CSV-backed external tables: `bronze_date`, `bronze_product`, `bronze_store`, `bronze_returns`, `bronze_sales`.
-- Silver models for analytics-ready outputs:
-  - `silver_sales_by_category_gender`: sales totals by product category and customer gender
-  - `silver_returns_by_store_month_reason`: refund totals by store, month, and reason
-- Custom generic test: `generic_non_negative` to ensure numeric columns are non-negative
-- Custom macro: `multiply` for numeric calculations
+### Highlights
+- 🧱 Medallion layers: bronze → silver → gold
+  - Bronze (staging): `bronze_date`, `bronze_product`, `bronze_store`, `bronze_returns`, `bronze_sales`
+  - Silver (curated): `silver_sales_by_category_gender`, `silver_returns_by_store_month_reason`
+  - Gold (analytics): reserved for downstream marts and snapshots `gold_items`
+- ✅ Data quality: built-in tests via `schema.yml` and a custom generic test `generic_non_negative`
+- 🧩 Reuse: `multiply` macro for numeric expressions
+- 🌐 Environments: catalogs are parameterized via `{{ target.catalog }}` for dev/prod
 
-Tech stack
-----------
+### Tech stack
 - dbt Core 1.10.x
-- dbt-databricks adapter 1.10.x
+- dbt-databricks 1.10.x
 - Databricks SQL Warehouse (or All-purpose cluster)
 
-Project structure
------------------
-- `models/bronze/` — staging models referencing sources
-- `models/silver/` — curated, aggregated models
+### Project structure
+- `models/bronze/` — source-aligned staging models
+- `models/silver/` — curated transforms and aggregates
 - `models/*/schema.yml` — documentation and tests
-- `macros/` — reusable macros (e.g., `multiply`)
+- `snapshots/` — snapshot definitions (e.g., `gold_items.yml`)
+- `macros/` — reusable Jinja utilities (e.g., `multiply`)
 - `tests/generic/` — custom generic tests (e.g., `generic_non_negative`)
+- `analyses/` — exploratory SQL (e.g., `target_variables.sql`)
 
-Setup
------
-1) Python environment
-   - Create and activate a virtual environment
-   - Install requirements: `pip install -r requirements.txt`
-
-2) Profiles and connection
-   - Ensure `profiles.yml` contains a `dbt_tutorial` Databricks profile with:
-     - `host`, `http_path`, and `catalog` (if Unity Catalog)
-     - `schema` (e.g., `bronze`, `silver`, `gold` configured in `dbt_project.yml`)
-     - Auth via `token` (Databricks PAT)
-
-3) Verify connection
+### Setup
+1) Create a virtual environment and install deps
+   - `pip install -r requirements.txt`
+2) Configure Databricks profile (`profiles.yml` → `dbt_tutorial`)
+   - `host`, `http_path`, `token`, default `catalog` and `schema`
+   - See `profiles-sample.yml` for dev/prod targets
+3) Verify
    - `dbt debug`
    - `dbt parse`
 
-Common commands
----------------
-- Build bronze and silver: `dbt build --select tag:bronze+ tag:silver`
-- Run only silver layer: `dbt run --select path:models/silver`
+### Common commands
+- Build bronze+silver: `dbt build --select tag:bronze+ tag:silver`
+- Run silver only: `dbt run --select path:models/silver`
 - Run tests: `dbt test`
-- Generate docs: `dbt docs generate && dbt docs serve`
+- Docs: `dbt docs generate && dbt docs serve`
 
-Development tips
-----------------
-- Use `ref()` for model dependencies and `source()` for source tables
-- Use tags and path selectors to target layers (`tag:bronze`, `path:models/silver`)
-- In VS Code, the dbt Power User extension can preview compiled SQL and DAG
+### Environment targets 🌐
+This project uses `{{ target.catalog }}` so you can deploy per environment:
+- Dev: `dbt build --target dev`
+- Prod: `dbt build --target prod`
 
-Data lineage
-------------
-- Silver models depend on bronze via `ref()`, and bronze depend on sources via `source()`
-- In the graph, expand parents to depth 2 to view `source → bronze → silver`
+### Snapshots ⏱️
+- Example: `snapshots/gold_items.yml` (timestamp strategy)
+- Use snapshots to track history (SCD-like) for selected entities
 
-Testing
--------
-- Column tests are defined in `schema.yml`
-- Custom generic test `generic_non_negative` lives in `tests/generic/` and is applied as:
-  ```yaml
-  - name: gross_amount
-    tests:
-      - generic_non_negative
-  ```
+### Data lineage 🔗
+- Silver depends on bronze via `ref()`, bronze depends on sources via `source()`
+- In the VS Code dbt Power User graph, increase parent depth to see `source → bronze → silver`
 
-Incoming features (roadmap)
----------------------------
-- Snapshots
-  - Introduce `snapshots/` to capture slowly changing dimensions (SCD2) for selected entities
-  - Add snapshot policies, schedule runs, and document snapshot lineage
-- CI/CD deployment
-  - GitHub Actions workflow to run `dbt deps`, `dbt build`, and publish docs on PRs/merges
-  - Environment-specific targets (dev, prod) via profiles and job parameters
-  - Optional state comparison to run only changed resources
+### CI/CD (recommended) 🤖
+Example GitHub Actions steps:
+```yaml
+steps:
+  - run: dbt deps
+  - run: dbt build --target dev --warn-error
+  - run: dbt build --target prod --select state:modified+ --defer --state ./target
+  - run: dbt docs generate
+```
 
-License
--------
-Apache-2.0 (or your preferred license)
+### Development tips 💡
+- Prefer `ref()` and `source()` over hard-coded names
+- Use tags/paths to target layers for fast iteration
+- Preview compiled SQL and browse the DAG with the dbt Power User extension
