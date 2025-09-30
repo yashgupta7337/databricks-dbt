@@ -59,6 +59,42 @@ models:
       description: "List price"
     - name: uom
       description: "Unit of measure"
+      
+  - name: bronze_sales
+    description: "Bronze layer sales data from source"
+    config: 
+      tags: ['bronze', 'bronze_sales']
+      materialized: table
+    columns:
+      - name: sales_id
+        description: "Primary key"
+        tests:
+          - not_null
+          - unique
+      - name: customer_sk
+        description: "Customer surrogate key"
+      - name: product_sk
+        description: "Product surrogate key"
+      - name: store_sk
+        description: "Store surrogate key"
+        tests:
+          - not_null
+      - name: date_sk
+        description: "Date surrogate key"
+      - name: quantity
+        description: "Quantity sold"
+      - name: unit_price
+        description: "Unit price"
+      - name: gross_amount
+        description: "Gross amount before discount"
+        tests:
+          - generic_non_negative
+      - name: discount_amount
+        description: "Discount amount"
+      - name: net_amount
+        description: "Net amount after discount"
+      - name: payment_method
+        description: "Payment method"
     
     
 
