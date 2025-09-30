@@ -1,25 +1,6 @@
 version: 2
 
 models:
-  - name: bronze_sales
-    description: "Bronze layer sales data from source"
-    columns:
-      - name: id
-        description: "Primary key"
-      - name: customer_id
-        description: "Customer identifier"
-      - name: product_id
-        description: "Product identifier"
-      - name: store_id
-        description: "Store identifier"
-      - name: date_id
-        description: "Date identifier"
-      - name: quantity
-        description: "Quantity sold"
-      - name: unit_price
-        description: "Unit price"
-      - name: total_amount
-        description: "Total amount"
   - name: bronze_customer
     description: "Bronze layer customer dimension from source"
     columns:
@@ -50,6 +31,12 @@ models:
         description: "Store business key"
       - name: store_name
         description: "Store name"
+        tests:
+          - accepted_values:
+              # values: ['MegaMart Manhattan', 'MegaMart Brooklyn', 'MegaMart Austin', 'MegaMart San Jose', 'MegaMart Toronto']
+              values: ['MegaMart Manhattan', 'MegaMart Brooklyn', 'MegaMart Austin', 'MegaMart San Jose']
+              config:
+                severity: warn
       - name: city
         description: "City"
       - name: state_province
@@ -58,6 +45,11 @@ models:
         description: "Region"
       - name: country
         description: "Country"
+        tests:
+          - accepted_values:
+              values: ['USA', 'Canada']
+              config:
+                severity: warn
       - name: open_date
         description: "Open date"
       - name: sq_ft
