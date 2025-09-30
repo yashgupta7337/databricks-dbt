@@ -1,0 +1,21 @@
+snapshots:
+  - name: gold_items
+    relation: ref('source_gold_items')
+    config:
+      schema: gold
+      database: dbt_tutorial_dev
+      unique_key: id
+      strategy: timestamp
+      updated_at: updated_at
+      dbt_valid_to_current: "to_date('9999-12-31')" # specifies that the snapshot will be valid until the current date
+      tags: ['gold', 'gold_items']
+      materialized: snapshot
+    columns:
+      - name: id
+        description: "Item ID"
+      - name: name
+        description: "Item name"
+      - name: category
+        description: "Item category"
+      - name: updated_at
+        description: "Item updated at"
