@@ -50,9 +50,37 @@ This project uses `{{ target.catalog }}` so you can deploy per environment:
 - Example: `snapshots/gold_items.yml` (timestamp strategy)
 - Use snapshots to track history (SCD-like) for selected entities
 
+#### SCD Type 2 (SCD2)
+This project implements SCD2 for `gold_items` via a timestamp-based snapshot. Records are preserved over time using a `unique_key` and an `updated_at` column.
+
+```yaml
+snapshots:
+  - name: gold_items
+    relation: ref('source_gold_items')
+    config:
+      schema: gold
+      database: '{{ target.catalog }}'
+      unique_key: id
+      strategy: timestamp
+      updated_at: updated_at
+```
+
+Run snapshots by environment:
+- Dev: `dbt snapshot --target dev`
+- Prod: `dbt snapshot --target prod`
+
 ### Data lineage 🔗
 - Silver depends on bronze via `ref()`, bronze depends on sources via `source()`
 - In the VS Code dbt Power User graph, increase parent depth to see `source → bronze → silver`
+
+#### Visuals
+- Silver model lineage (sales by category and gender):
+
+![Silver lineage – silver_sales_by_category_gender](data_lineage/dl-silver_sales_by_category_gender.png)
+
+- Gold model lineage (snapshot-backed items):
+
+![Gold lineage – gold_items](data_lineage/dl-gold_gold_items.png)
 
 ### CI/CD (recommended) 🤖
 Example GitHub Actions steps:
