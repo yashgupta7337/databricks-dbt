@@ -7,12 +7,59 @@ models:
       tags: ['bronze', 'bronze_date']
       materialized: view
       schema: bronze
+    columns:
+      - name: date_sk
+        description: "Date surrogate key"
+      - name: date
+        description: "Calendar date"
+      - name: day
+        description: "Day of month"
+      - name: month
+        description: "Month number"
+      - name: month_name
+        description: "Month name"
+      - name: quarter
+        description: "Quarter number"
+      - name: year
+        description: "Year"
+      - name: day_of_week
+        description: "Day of week number"
+      - name: day_name
+        description: "Day name"
+      - name: is_weekend
+        description: "Weekend flag"
+      - name: is_month_end
+        description: "Month end flag"
+      - name: is_month_start
+        description: "Month start flag"
+      - name: is_quarter_end
+        description: "Quarter end flag"
+      - name: is_quarter_start
+        description: "Quarter start flag"
 
   - name: bronze_product
     description: property level config for bronze_date
     config: 
       tags: ['bronze', 'bronze_product']
       materialized: view
+    columns:
+    - name: product_sk
+      description: "Product surrogate key"
+    - name: product_code
+      description: "Product business key"
+    - name: product_name
+      description: "Product name"
+    - name: department
+      description: "Department"
+    - name: category
+      description: "Category"
+    - name: supplier_sk
+      description: "Supplier surrogate key"
+    - name: list_price
+      description: "List price"
+    - name: uom
+      description: "Unit of measure"
+    
     
 
     

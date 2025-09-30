@@ -20,3 +20,62 @@ models:
         description: "Unit price"
       - name: total_amount
         description: "Total amount"
+  - name: bronze_customer
+    description: "Bronze layer customer dimension from source"
+    columns:
+      - name: customer_sk
+        description: "Customer surrogate key"
+      - name: customer_code
+        description: "Customer business key"
+      - name: first_name
+        description: "First name"
+      - name: last_name
+        description: "Last name"
+      - name: gender
+        description: "Gender"
+      - name: email
+        description: "Email"
+      - name: phone
+        description: "Phone"
+      - name: loyalty_tier
+        description: "Loyalty tier"
+      - name: signup_date
+        description: "Signup date"
+  - name: bronze_store
+    description: "Bronze layer store dimension from source"
+    columns:
+      - name: store_sk
+        description: "Store surrogate key"
+      - name: store_code
+        description: "Store business key"
+      - name: store_name
+        description: "Store name"
+      - name: city
+        description: "City"
+      - name: state_province
+        description: "State or province"
+      - name: region
+        description: "Region"
+      - name: country
+        description: "Country"
+      - name: open_date
+        description: "Open date"
+      - name: sq_ft
+        description: "Square footage"
+  - name: bronze_returns
+    description: "Bronze layer returns fact from source"
+    columns:
+      - name: sales_id
+        description: "Sales event identifier"
+      - name: date_sk
+        description: "Date surrogate key"
+      - name: store_sk
+        description: "Store surrogate key"
+      - name: product_sk
+        description: "Product surrogate key"
+      - name: returned_qty
+        description: "Quantity returned"
+      - name: return_reason
+        description: "Return reason"
+      - name: refund_amount
+        description: "Refund amount"
