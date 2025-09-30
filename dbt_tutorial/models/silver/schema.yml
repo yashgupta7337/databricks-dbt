@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: silver_sales_by_category_gender
+    description: "Sales totals by category and customer gender"
+    config:
+      tags: ['silver', 'silver_sales_by_category_gender']
+      materialized: table
+    columns:
+      - name: category
+        description: "Product category"
+      - name: gender
+        description: "Customer gender"
+      - name: total_sales
+        description: "Sum of gross_amount by category and gender"
+
+  - name: silver_returns_by_store_month_reason
+    description: "Refund totals by store, month, and return reason"
+    config:
+      tags: ['silver', 'silver_returns_by_store_month_reason']
+      materialized: table
+    columns:
+      - name: store_code
+        description: "Store business key"
+      - name: store_name
+        description: "Store name"
+      - name: month
+        description: "Month number"
+      - name: return_reason
+        description: "Reason for return"
+      - name: total_refund_amount
+        description: "Rounded sum of refund_amount"
